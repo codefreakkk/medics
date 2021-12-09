@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kanakku.dreamguystech.com/html/template/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 28 Aug 2021 10:01:35 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+   
+    {{!-- <link rel="shortcut icon" href="assets/img/favicon.png"> --}}
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="css/fontawesome.min.css">
+    <link rel="stylesheet" href="css/all.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+    .sidebar-inner::-webkit-scrollbar {
+        display: none;
+    }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+
+    {{>navbar}}
+    {{>sidebar}}
+
+
+
+        <div class="page-wrapper">
+            <div class="content container-fluid">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <h5 class="card-title">Edit Stock</h5>
+                                </div>
+                                <form action="#">
+                                    <div class="row">
+                                        <div class="col-md-4 mt-3">
+                                            <div class="form-group">
+                                                <label>Item Name</label>
+                                                <input type="text" class="form-control" value="INV-65ZTE15">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 mt-3">
+                                            <div class="form-group">
+                                                <label>Quantity</label>
+                                                <input type="text" class="form-control" value="INV-65ZTE15">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 mt-3">
+                                            <div class="form-group">
+                                                <label>Bill Date</label>
+                                                <div class="cal-icon">
+                                                    <input class="form-control datetimepicker" type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mt-3">
+                                            <div class="form-group">
+                                                <label>MRP</label>
+                                                <input type="text" class="form-control" value="INV-65ZTE15">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mt-3">
+                                            <div class="form-group">
+                                                <label>Rate</label>
+                                                <input type="text" class="form-control" value="INV-65ZTE15">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-stripped table-center table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Item Name</th>
+                                                    <th>Quantity</th>
+                                                    <th>Rate</th>
+                                                    <th>Total Amount</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" class="form-control" value="Website Design">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" value="2">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" value="$10">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" value="$20" disabled>
+                                                    </td>
+                                                    <td>
+
+                                                        <a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_category"
+                                                            class="btn btn-sm btn-white text-danger me-2"><i
+                                                                class="far fa-trash-alt me-1"></i>Delete</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-stripped table-center table-hover">
+                                            <thead></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-end">Sub Total</td>
+                                                    <td class="text-end">$20</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-end">Discount</td>
+                                                    <td class="text-end">$3</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-end">Total</td>
+                                                    <td class="text-end">$17</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="text-end mt-4">
+                                        <button type="submit" class="btn btn-primary">Submit & Add Stock</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+
+    
+    <script src="../scripts/jquery-3.6.0.min.js"></script>
+
+    <script src="../scripts/popper.min.js"></script>
+    <script src="../scripts/bootstrap.min.js"></script>
+
+    <script src="../scripts/feather.min.js"></script>
+
+    <script src="../scripts/jquery.slimscroll.min.js"></script>
+
+    <script src="../scripts/apexcharts.min.js"></script>
+    <script src="../scripts/chart-data.js"></script>
+
+    <script src="../scripts/script.js"></script>
+</body>
+
+
+</html>

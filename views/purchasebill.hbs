@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kanakku.dreamguystech.com/html/template/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 28 Aug 2021 10:01:35 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="css/fontawesome.min.css">
+    <link rel="stylesheet" href="css/all.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+    <!--[if lt IE 9]>
+			<script src="assets/js/html5shiv.min.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+
+    <style>
+        .sidebar-inner::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+
+
+        {{>navbar}}
+        {{>sidebar}}
+
+
+        <div class="page-wrapper">
+            <div class="content container-fluid">
+
+                <div id="alert">
+                    {{!-- alert --}}
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <h5 class="card-title">Purchase Bill</h5>
+                                </div>
+                                <form action="#">
+                                    <div class="row">
+                                        <div class="col-md-4 mt-3">
+                                            <div class="form-group">
+                                                <label>Item Name</label>
+                                                <input type="text" class="form-control" value="" id="itemname">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 mt-3">
+                                            <div class="form-group">
+                                                <label>Quantity</label>
+                                                <input type="text" class="form-control" value="" id="qty">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 mt-3">
+                                            <div class="form-group">
+                                                <label>Bill Date</label>
+                                                <div class="cal-icon">
+                                                    <input class="form-control datetimepicker" type="date" id="date">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mt-3">
+                                            <div class="form-group">
+                                                <label>MRP</label>
+                                                <input type="text" class="form-control" value="" id="mrp">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mt-3">
+                                            <div class="form-group">
+                                                <label>Rate</label>
+                                                <input type="text" class="form-control" value="" id="rate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-stripped table-center table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Item Name</th>
+                                                    <th>Quantity</th>
+                                                    <th>Rate</th>
+                                                    <th>Total Amount</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" class="form-control" value="" id="itemname2">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" value="" id="qty2">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" value="" id="rate2">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" value="" id="tamt"
+                                                            disabled>
+                                                    </td>
+                                                    <td>
+
+                                                        <a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_category"
+                                                            class="btn btn-sm btn-white text-danger me-2"><i
+                                                                class="far fa-trash-alt me-1"></i>Delete</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-stripped table-center table-hover">
+                                            <thead></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-end">Sub Total</td>
+                                                    <td class="text-end" id="stotal">0 Rs</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-end">Total</td>
+                                                    <td class="text-end" id="total"> 0 Rs</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="text-end mt-4">
+                                        <button type="button" class="btn btn-primary" onclick="toggleButton()">Submit &
+                                            Add Stock</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+
+    {{!-- scripts here --}}
+    <script>
+
+        let iname = document.getElementById("itemname")
+        let qty = document.getElementById("qty")
+        let date = document.getElementById("date")
+        let mrp = document.getElementById("mrp")
+        let rate = document.getElementById("rate")
+
+        let iname2 = document.getElementById("itemname2")
+        let qty2 = document.getElementById("qty2");
+        let rate2 = document.getElementById("rate2");
+        let tamt = document.getElementById("tamt");
+
+        iname.onkeyup = () => {
+            iname2.value = iname.value;
+        }
+
+        qty.onkeyup = () => {
+            qty2.value = qty.value;
+        }
+
+        rate.onkeyup = () => {
+            rate2.value = rate.value;
+        }
+
+        // logic for total amt
+        rate.onblur = () => {
+            if (qty2.value > 0 && rate2.value > 0) {
+                console.log("harsh")
+                let ans = rate2.value * qty2.value;
+                tamt.value = ans;
+                document.getElementById("stotal").innerHTML = ans + " Rs";
+                document.getElementById("total").innerHTML = ans + " Rs"
+            } else {
+                console.log("total amt error");
+            }
+        }
+
+        function toggleButton() {
+
+            const iname = document.getElementById("itemname").value;
+            const qty = document.getElementById("qty").value;
+            const date = document.getElementById("date").value;
+            const mrp = document.getElementById("mrp").value;
+            const rate = document.getElementById("rate").value;
+            const tamt = document.getElementById("tamt").value;
+
+            fetch("purchasebill", {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: iname,
+                    qty: qty,
+                    date: date,
+                    mrp: mrp,
+                    rate: rate,
+                    tamt: tamt,
+                }),
+            }).then((response) => response.json()).then((data) => {
+                const flag = data.text;
+
+                if (flag == "inserted") {
+                    document.getElementById("itemname").value = ""
+                    document.getElementById("qty").value = ""
+                    document.getElementById("date").value = ""
+                    document.getElementById("mrp").value = ""
+                    document.getElementById("rate").value = ""
+                    document.getElementById("itemname2").value = ""
+                    document.getElementById("qty2").value = ""
+                    document.getElementById("rate2").value = ""
+                    document.getElementById("tamt").value = ""
+                    document.getElementById("stotal").innerHTML = "";
+                    document.getElementById("total").innerHTML = "";
+
+                    document.getElementById("alert").innerHTML = `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Alert!</strong> Data saved successfully.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    `;
+                }
+
+                if (flag == "notinserted") {
+                    document.getElementById("alert").innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Alert!</strong> Data not saved.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    `;
+                }
+            });
+
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="../scripts/jquery-3.6.0.min.js"></script>
+
+    <script src="../scripts/popper.min.js"></script>
+    <script src="../scripts/bootstrap.min.js"></script>
+
+    <script src="../scripts/feather.min.js"></script>
+
+    <script src="../scripts/jquery.slimscroll.min.js"></script>
+
+    <script src="../scripts/apexcharts.min.js"></script>
+    <script src="../scripts/chart-data.js"></script>
+
+    <script src="../scripts/script.js"></script>
+</body>
+
+
+</html>

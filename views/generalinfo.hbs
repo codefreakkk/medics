@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kanakku.dreamguystech.com/html/template/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 28 Aug 2021 10:01:35 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="css/fontawesome.min.css">
+    <link rel="stylesheet" href="css/all.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+
+
+    <style>
+        .sidebar-inner::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+
+        {{>navbar}}
+        {{>sidebar}}
+
+        <div class="page-wrapper" style="display:flex;justify-content:center;align-items:center;">
+            <div class="content container-fluid">
+                {{#if alert}}
+                <div class="alert alert-{{success}} alert-dismissible fade show" role="alert">
+                    <strong>Alert !</strong> {{msg}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {{/if}}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">General Info</h4>
+                                <form action="/generalinfo" method="post">
+                           
+                                    {{#each data}}
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Medical Name</label>
+                                                <input type="text" name="name" value="{{this.medicalName}}" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Email</label>
+                                                <input type="email" name="email" value="{{this.email}}" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Address</label>
+                                                <input rows="5" cols="5" value="{{this.address}}" name="address" class="form-control"
+                                                    placeholder="938 Green Acres Road"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Phone</label>
+                                                <input type="text" value="{{this.phone}}" name="phone" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>State</label>
+                                                <input type="text" value="{{this.state}}" name="state" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Zip Code</label>
+                                                <input type="text" name="zip" value="{{this.zip}}" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{/each}}
+                                    <div class="text-end mt-4">
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <script src="../scripts/jquery-3.6.0.min.js"></script>
+
+    <script src="../scripts/popper.min.js"></script>
+    <script src="../scripts/bootstrap.min.js"></script>
+
+    <script src="../scripts/feather.min.js"></script>
+
+    <script src="../scripts/jquery.slimscroll.min.js"></script>
+
+    <script src="../scripts/apexcharts.min.js"></script>
+    <script src="../scripts/chart-data.js"></script>
+
+    <script src="../scripts/script.js"></script>
+</body>
+
+<!-- Mirrored from kanakku.dreamguystech.com/html/template/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 28 Aug 2021 10:02:03 GMT -->
+
+</html>
