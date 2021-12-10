@@ -14,10 +14,6 @@
     <link rel="stylesheet" href="css/all.min.css">
 
     <link rel="stylesheet" href="css/style.css">
-    <!--[if lt IE 9]>
-			<script src="assets/js/html5shiv.min.js"></script>
-			<script src="assets/js/respond.min.js"></script>
-		<![endif]-->
 
     <style>
         .sidebar-inner::-webkit-scrollbar {
@@ -70,7 +66,7 @@
                                         <div class="col-md-4 mt-3">
                                             <div class="form-group">
                                                 <label>Bill Date</label>
-                                                <div class="cal-icon">
+                                                <div class="">
                                                     <input class="form-control datetimepicker" type="date" id="date">
                                                 </div>
                                             </div>
@@ -116,8 +112,7 @@
                                                     </td>
                                                     <td>
 
-                                                        <a href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#delete_category"
+                                                        <a href="#" onclick="clearData()"
                                                             class="btn btn-sm btn-white text-danger me-2"><i
                                                                 class="far fa-trash-alt me-1"></i>Delete</a>
                                                     </td>
@@ -201,6 +196,28 @@
             }
         }
 
+        qty.onblur = () => {
+            if (qty2.value > 0 && rate2.value > 0) {
+                let ans = rate2.value * qty2.value;
+                tamt.value = ans;
+                document.getElementById("stotal").innerHTML = ans + " Rs";
+                document.getElementById("total").innerHTML = ans + " Rs"
+            } else {
+                console.log("total amt error");
+            }
+        }
+        
+        mrp.onblur = () => {
+            if (qty2.value > 0 && rate2.value > 0) {
+                let ans = rate2.value * qty2.value;
+                tamt.value = ans;
+                document.getElementById("stotal").innerHTML = ans + " Rs";
+                document.getElementById("total").innerHTML = ans + " Rs"
+            } else {
+                console.log("total amt error");
+            }
+        }
+
         function toggleButton() {
 
             const iname = document.getElementById("itemname").value;
@@ -209,6 +226,8 @@
             const mrp = document.getElementById("mrp").value;
             const rate = document.getElementById("rate").value;
             const tamt = document.getElementById("tamt").value;
+
+            // get the user id first
 
             fetch("purchasebill", {
                 method: "POST",
@@ -254,8 +273,23 @@
                     `;
                 }
             });
-
         }
+
+        function clearData() {
+            document.getElementById("itemname").value = ""
+            document.getElementById("qty").value = ""
+            document.getElementById("date").value = ""
+            document.getElementById("mrp").value = ""
+            document.getElementById("rate").value = ""
+            document.getElementById("itemname2").value = ""
+            document.getElementById("qty2").value = ""
+            document.getElementById("rate2").value = ""
+            document.getElementById("tamt").value = ""
+            document.getElementById("stotal").innerHTML = "";
+            document.getElementById("total").innerHTML = "";
+        }
+
+
     </script>
 
 

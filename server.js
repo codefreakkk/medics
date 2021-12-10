@@ -25,9 +25,17 @@ app.use("/generalinfo", generalinfo);
 const purchasebill = require("./routes/purchasebill")
 app.use("/purchasebill", purchasebill);
 
-app.get("/purchaseinvoice", (req, res) => {
-    res.render("purchaseinvoice");
+// Route for purchaseinvoice
+const purchaseinvoice = require("./routes/purchaseinvoice");
+app.use("/purchaseinvoice", purchaseinvoice);
+
+const editpbill = require("./routes/editpbill");
+app.use("/editpbill", editpbill);
+
+app.get("/pinvoice", (req, res) => {
+    res.render("pinvoice");
 });
+
 
 app.get("/showstock", (req, res) => {
     res.render("showstock");
@@ -43,10 +51,6 @@ app.get("/salesinvoice", (req, res) => {
 
 app.get("/salesreport", (req, res) => {
     res.render("salesreport");
-});
-
-app.get("/editpbill", (req, res) => {
-    res.render("editpbill");
 });
 
 app.get("/stockinfo", (req, res) => {
