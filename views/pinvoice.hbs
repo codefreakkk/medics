@@ -13,10 +13,7 @@
     <link rel="stylesheet" href="css/all.min.css">
 
     <link rel="stylesheet" href="css/style.css">
-    <!--[if lt IE 9]>
-			<script src="assets/js/html5shiv.min.js"></script>
-			<script src="assets/js/respond.min.js"></script>
-		<![endif]-->
+
 </head>
 
 <body>
@@ -25,24 +22,25 @@
 
         {{>navbar}}
         {{>sidebar}}
-        
+
+        <input type="hidden" id="id" value="{{id}}">
         <div class="page-wrapper">
             <div class="content container-fluid">
                 <div class="row justify-content-center">
                     <div class="col-xl-8">
-                        <div class="card">
+                        <div class="card" id="pinvoice">
                             <div class="card-body">
                                 <div class="invoice-item">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="invoice-logo">
-                                                <img src="assets/img/logo.png" alt="logo">
+
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <p class="invoice-details">
-                                                <strong>Order:</strong> #00124 <br>
-                                                <strong>Issued:</strong> 20/07/2019
+                                                <strong class="mb-2">Invoice No:</strong> <span id="orderid"></span><br>
+                                                <strong>Issued:</strong> <span id="orderdate"></span>
                                             </p>
                                         </div>
                                     </div>
@@ -60,32 +58,13 @@
                                                 </p>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="invoice-info invoice-info2">
-                                                <strong class="customer-text">Invoice To</strong>
-                                                <p class="invoice-details">
-                                                    Walter Roberson <br>
-                                                    299 Star Trek Drive, Panama City, <br>
-                                                    Florida, 32405, USA <br>
-                                                </p>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
 
 
                                 <div class="invoice-item">
                                     <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="invoice-info">
-                                                <strong class="customer-text">Payment Method</strong>
-                                                <p class="invoice-details invoice-details-two">
-                                                    Debit Card <br>
-                                                    XXXXXXXXXXXX-2541 <br>
-                                                    HDFC Bank<br>
-                                                </p>
-                                            </div>
-                                        </div>
+
                                     </div>
                                 </div>
 
@@ -99,23 +78,13 @@
                                                         <tr>
                                                             <th>Description</th>
                                                             <th class="text-center">Quantity</th>
-                                                            <th class="text-center">VAT</th>
+                                                            <th class="text-center">MRP</th>
+                                                            <th class="text-center">Rate</th>
                                                             <th class="text-end">Total</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>General Consultation</td>
-                                                            <td class="text-center">1</td>
-                                                            <td class="text-center">$0</td>
-                                                            <td class="text-end">$100</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Video Call Booking</td>
-                                                            <td class="text-center">1</td>
-                                                            <td class="text-center">$0</td>
-                                                            <td class="text-end">$250</td>
-                                                        </tr>
+                                                    <tbody id="tdata">
+
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -126,15 +95,11 @@
                                                     <tbody>
                                                         <tr>
                                                             <th>Subtotal:</th>
-                                                            <td><span>$350</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Discount:</th>
-                                                            <td><span>-10%</span></td>
+                                                            <td><span id="subtotal"></span></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Total Amount:</th>
-                                                            <td><span>$315</span></td>
+                                                            <td><span id="tamt"></span></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -142,15 +107,82 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
+                        <button type="button" class="btn btn-primary" style="width: 15%;"
+                            onclick="printInvoice()">Print</button>
                     </div>
                 </div>
             </div>
         </div>
 
     </div>
+
+
+    <script>
+
+        // fetch data
+        const orderid = document.getElementById("orderid");
+        const orderdate = document.getElementById("orderdate");
+        const subtotal = document.getElementById("subtotal");
+        const tdata = document.getElementById("tdata");
+        const tamt = document.getElementById("tamt");
+
+        const id = document.getElementById("id").value;
+        fetch("pinvoice", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: id,
+            })
+        }).then((response) => response.json()).then((data) => {
+            if (data.data.length > 0) {
+
+                // generate invoice number
+                const mydata = data.data[0];
+                let id = mydata._id.toString()
+                let pinv = id.slice(id.length - 8, id.length);
+
+                orderid.innerHTML = `PINV-${pinv}`;
+                orderdate.innerHTML = mydata.billDate;
+                subtotal.innerHTML = mydata.tamt + " Rs";
+                tamt.innerHTML = mydata.tamt + " Rs";
+                tdata.innerHTML = `
+                    <tr>
+                    <td>${mydata.itemName}</td>
+                    <td class="text-center">${mydata.quantity}</td>
+                    <td class="text-center">${mydata.mrp + " "}Rs</td>
+                    <td class="text-end">${mydata.rate + " "} Rs</td>
+                    <td class="text-end">${mydata.tamt + " "} Rs</td>
+                    </tr>
+                `;
+            }
+        })
+
+        function printInvoice() {
+            const pinvoice = document.getElementById("pinvoice").innerHTML;
+            const a = window.open('Purchase invoice', '', 'height=500, width=500');
+            a.document.write('<html>');
+            a.document.write(` 
+            <head>
+            <link rel="stylesheet" href="css/bootstrap.min.css">
+            <link rel="stylesheet" href="css/fontawesome.min.css">
+            <link rel="stylesheet" href="css/all.min.css">
+            <link rel="stylesheet" href="css/style.css">
+            </head>`)
+            a.document.write('<body>');
+            a.document.write(`<div>${pinvoice}</div>`);
+            a.document.write('</body></html>');
+            //a.document.close();
+            a.print();
+        }
+
+    </script>
+
+
+
+
+
 
     <script src="../scripts/jquery-3.6.0.min.js"></script>
 

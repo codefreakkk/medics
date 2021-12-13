@@ -4,6 +4,7 @@ const path = require("path");
 const css_path = path.join(__dirname, "css");
 const script_path = path.join(__dirname, "scripts");
 const partials_path = path.join(__dirname, "partials");
+const pSchema = require("./model/purchaseschema");
 const hbs = require("hbs");
 require("./model/dbcon");
 
@@ -29,17 +30,17 @@ app.use("/purchasebill", purchasebill);
 const purchaseinvoice = require("./routes/purchaseinvoice");
 app.use("/purchaseinvoice", purchaseinvoice);
 
+// Route for editpbill
 const editpbill = require("./routes/editpbill");
 app.use("/editpbill", editpbill);
 
-app.get("/pinvoice", (req, res) => {
-    res.render("pinvoice");
-});
+// Route for pinvoice
+const pinvoice = require("./routes/pinvoice");
+app.use("/pinvoice", pinvoice);
 
-
-app.get("/showstock", (req, res) => {
-    res.render("showstock");
-});
+// Route for showstock
+const showstock = require("./routes/showstock")
+app.use("/showstock", showstock)
 
 app.get("/salesbill", (req, res) => {
     res.render("salesbill");
@@ -53,9 +54,9 @@ app.get("/salesreport", (req, res) => {
     res.render("salesreport");
 });
 
-app.get("/stockinfo", (req, res) => {
-    res.render("stockinfo");
-});
+// Route for stockinfo
+const stockinfo = require("./routes/stockinfo");
+app.use("/stockinfo", stockinfo);
 
 app.get("/editstock", (req, res) => {
     res.render("editstock");

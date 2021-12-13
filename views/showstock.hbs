@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-   
+
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
 
@@ -20,9 +20,9 @@
 		<![endif]-->
 
     <style>
-    .sidebar-inner::-webkit-scrollbar {
-        display: none;
-    }
+        .sidebar-inner::-webkit-scrollbar {
+            display: none;
+        }
     </style>
 </head>
 
@@ -30,8 +30,8 @@
 
     <div class="main-wrapper">
 
-    {{>navbar}}
-    {{>sidebar}}
+        {{>navbar}}
+        {{>sidebar}}
 
         <div class="page-wrapper" style="display:flex;justify-content:center;">
             <div class="col-xl-9 col-md-8" style="margin-top:50px;">
@@ -42,9 +42,10 @@
                                 <h5 class="card-title">Show Stock</h5>
                             </div>
                             <div class="col-auto">
-                                <form>
-                                    <input type="text" class="form-control" placeholder="Search here">
-                                </form>
+
+                                <input type="text" class="form-control" id="text" placeholder="Search here"
+                                    onkeyup="liveSearch()">
+
                             </div>
                         </div>
                     </div>
@@ -60,29 +61,31 @@
                                         <th class="text-end">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tdata">
+                                    {{#each data}}
                                     <tr>
-                                        <td>Accounts</td>
-                                        <td>Lorem ipsum dollar</td>
+                                        <td>{{this.itemName}}</td>
+                                        <td>{{this.quantity}}</td>
                                         <td>
-                                            <span class="badge bg-success-light">Active</span>
+                                            {{this.rate}} Rs
                                         </td>
 
-                                        <td>1000 Rs</td>
+                                        <td>{{this.tamt}} Rs</td>
                                         <td class="text-end">
-                                            <a href="/stockinfo" class="btn btn-sm btn-white me-2"
+                                            <a href="/stockinfo?id={{this._id}}" class="btn btn-sm btn-white me-2"
                                                 style="color:blue;"><i class="far fa-question-circle"
                                                     style="margin-right:5px;color:blue;"></i>Info</a>
-                                            <a href="/editstock" class="btn btn-sm btn-white text-success me-2"><i
+                                            <a href="/editpbill?id={{this._id}}"
+                                                class="btn btn-sm btn-white text-success me-2"><i
                                                     class="far fa-edit me-1"></i> Edit</a>
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#delete_category"
-                                                class="btn btn-sm btn-white text-danger me-2"><i
-                                                    class="far fa-trash-alt me-1"></i>Delete</a>
 
 
+                                            <a style="cursor:pointer;" class="btn btn-sm btn-white text-danger me-2"
+                                                id="{{this._id}}" onclick="deleteFunction(this.id)"><i
+                                                    class="far fa-trash-alt me-2"></i>Delete</a>
                                         </td>
                                     </tr>
-
+                                    {{/each}}
                                 </tbody>
                             </table>
                         </div>
@@ -94,8 +97,106 @@
     </div>
 
     </div>
-    {{>deletemodal}}
-   
+
+
+    <script>
+
+        // delete stock
+        function deleteFunction(id) {
+            fetch("purchaseinvoice", {
+                method: "delete",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id }),
+            }).then((response) => response.json()).then((data) => {
+                if (data.inserted == "true") {
+                    location.reload();
+                }
+            })
+        }
+
+        // live search
+        function liveSearch() {
+            let data = document.getElementById("text");
+            if (data.value != "") {
+                fetch("showstock", {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        data: data.value,
+                    }),
+                }).then((response) => response.json()).then((data) => {
+                    let ele = data.res;
+                    if(ele.length > 0) {
+                        const tdata = document.getElementById("tdata");
+                        ele.forEach((mydata) => {
+                            tdata.innerHTML = `
+                                    <tr>
+                                        <td>${mydata.itemName}</td>
+                                        <td>${mydata.quantity}</td>
+                                        <td>
+                                            ${mydata.rate} Rs
+                                        </td>
+
+                                        <td>${mydata.tamt} Rs</td>
+                                        <td class="text-end">
+                                            <a href="/stockinfo?id=${mydata._id}" class="btn btn-sm btn-white me-2"
+                                                style="color:blue;"><i class="far fa-question-circle"
+                                                    style="margin-right:5px;color:blue;"></i>Info</a>
+                                            <a href="/editpbill?id=${mydata._id}"
+                                                class="btn btn-sm btn-white text-success me-2"><i
+                                                    class="far fa-edit me-1"></i> Edit</a>
+                                                    
+
+                                            <a style="cursor:pointer;" class="btn btn-sm btn-white text-danger me-2" id="${mydata._id}"
+                                                onclick="deleteFunction(this.id)"><i
+                                                    class="far fa-trash-alt me-2"></i>Delete</a>
+                                        </td>
+                                    </tr>
+                            `
+                        })
+                    } else {
+                        // set data to default
+                        tdata.innerHTML = "<span style='margin-left:10px;margin-top:20px;font-weight:bold;'>No data found</span>";
+                    }
+                })
+            } else {
+                // set data to default
+                tdata.innerHTML = `
+                    {{#each data}}
+                                    <tr>
+                                        <td>{{this.itemName}}</td>
+                                        <td>{{this.quantity}}</td>
+                                        <td>
+                                            {{this.rate}} Rs
+                                        </td>
+
+                                        <td>{{this.tamt}} Rs</td>
+                                        <td class="text-end">
+                                            <a href="/stockinfo?id={{this._id}}" class="btn btn-sm btn-white me-2"
+                                                style="color:blue;"><i class="far fa-question-circle"
+                                                    style="margin-right:5px;color:blue;"></i>Info</a>
+                                            <a href="/editpbill?id={{this._id}}"
+                                                class="btn btn-sm btn-white text-success me-2"><i
+                                                    class="far fa-edit me-1"></i> Edit</a>
+
+
+                                            <a style="cursor:pointer;" class="btn btn-sm btn-white text-danger me-2"
+                                                id="{{this._id}}" onclick="deleteFunction(this.id)"><i
+                                                    class="far fa-trash-alt me-2"></i>Delete</a>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                `
+            }
+        }
+
+    </script>
+
+
+
+
+
+
     <script src="../scripts/jquery-3.6.0.min.js"></script>
 
     <script src="../scripts/popper.min.js"></script>
